@@ -13,7 +13,7 @@ class FilterModule(object):
     @staticmethod
     def vlan_parser(vlan_list):
         '''
-            Input: Unsorted list oFilterModule.vlan integers
+            Input: Unsorted list of vlan integers
             Output: Sorted list of integers according to Cisco IOS vlan list rules
 
             1. Vlans are listed in ascending order
