@@ -37,7 +37,7 @@ class FilterModule(object):
              switchport mode trunk
         '''
 
-        #Sort and remove duplicates
+        # Sort and remove duplicates
         sorted_list = sorted(set(vlan_list))
 
         parse_list = []
@@ -45,28 +45,33 @@ class FilterModule(object):
         while idx < len(sorted_list):
             start = idx
             end = start
+            
+            # How many consecutive VLANs are there?
             while end < len(sorted_list) - 1:
                 if sorted_list[end + 1] - sorted_list[end] == 1:
                     end += 1
                 else:
                     break
-
+                    
+            # Single VLAN
             if start == end:
-                # Single VLAN
                 parse_list.append(str(sorted_list[idx]))
+                
+            # Run of 2 VLANs
             elif start + 1 == end:
-                # Run of 2 VLANs
                 parse_list.append(str(sorted_list[start]))
                 parse_list.append(str(sorted_list[end]))
+
+            # Run of 3 or more VLANs
             else:
-                # Run of 3 or more VLANs
                 parse_list.append(str(sorted_list[start]) + '-' + str(sorted_list[end]))
+            
             idx = end + 1
 
         line_count = 0
         result = ['']
         for vlans in parse_list:
-            #First line (" switchport trunk allowed vlan ")
+            # First line (" switchport trunk allowed vlan ")
             if line_count == 0:
                 if len(result[line_count] + vlans) > 48:
                     result.append('')
@@ -75,7 +80,7 @@ class FilterModule(object):
                 else:
                     result[line_count] += vlans + ','
 
-            #Subsequent lines (" switchport trunk allowed vlan add ")
+            # Subsequent lines (" switchport trunk allowed vlan add ")
             else:
                 if len(result[line_count] + vlans) > 44:
                     result.append('')
@@ -84,11 +89,11 @@ class FilterModule(object):
                 else:
                     result[line_count] += vlans + ','
 
-        #Remove trailing orphan commas
+        # Remove trailing orphan commas
         for idx in range(0, len(result)):
             result[idx] = result[idx].rstrip(',')
 
-        #Sometimes text wraps to next line, but there are no remaining VLANs
+        # Sometimes text wraps to next line, but there are no remaining VLANs
         if '' in result:
             result.remove('')
 
