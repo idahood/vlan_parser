@@ -160,7 +160,7 @@ class VLANParserMethods(unittest.TestCase):
 
     def test_example3(self):
         '''
-             switchport trunk allowed vlan 1,2,3
+             switchport trunk allowed vlan 1-3
         '''
 
         #Check number of lines in result
