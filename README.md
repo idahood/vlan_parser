@@ -1,3 +1,5 @@
+# This became https://github.com/ansible/ansible/pull/40555
+
 # vlan_parser
 Ansible filter for declaratively defining vlan trunks
 
